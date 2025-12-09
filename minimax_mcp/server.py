@@ -12,6 +12,7 @@ Note: Tools without cost warnings are free to use as they only read existing dat
 """
 
 import os
+import sys
 import base64
 import requests
 import time
@@ -30,12 +31,27 @@ from minimax_mcp.const import *
 from minimax_mcp.exceptions import MinimaxAPIError, MinimaxRequestError
 from minimax_mcp.client import MinimaxAPIClient
 
+# Parse CLI arguments
+cli_args = {}
+args = sys.argv[1:]
+for i in range(len(args)):
+    if args[i].startswith('--'):
+        key_value = args[i][2:].split('=', 1)
+        if len(key_value) == 2:
+            cli_args[key_value[0]] = key_value[1]
+        elif i + 1 < len(args) and not args[i + 1].startswith('--'):
+            cli_args[key_value[0]] = args[i + 1]
+
+def get_config(cli_key: str, env_key: str, default: str = None) -> str:
+    """Get config value with CLI args taking precedence over env vars."""
+    return cli_args.get(cli_key) or os.getenv(env_key) or default
+
 load_dotenv()
-api_key = os.getenv(ENV_MINIMAX_API_KEY)
-base_path = os.getenv(ENV_MINIMAX_MCP_BASE_PATH) or "~/Desktop"
-api_host = os.getenv(ENV_MINIMAX_API_HOST)
-resource_mode = os.getenv(ENV_RESOURCE_MODE) or RESOURCE_MODE_URL
-fastmcp_log_level = os.getenv(ENV_FASTMCP_LOG_LEVEL) or "WARNING"
+api_key = get_config('api-key', ENV_MINIMAX_API_KEY)
+base_path = get_config('base-path', ENV_MINIMAX_MCP_BASE_PATH, '~/Desktop')
+api_host = get_config('api-host', ENV_MINIMAX_API_HOST)
+resource_mode = get_config('resource-mode', ENV_RESOURCE_MODE, RESOURCE_MODE_URL)
+fastmcp_log_level = get_config('log-level', ENV_FASTMCP_LOG_LEVEL, 'WARNING')
 
 if not api_key:
     raise ValueError("MINIMAX_API_KEY environment variable is required")
