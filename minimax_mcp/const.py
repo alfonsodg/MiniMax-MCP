@@ -1,7 +1,7 @@
 # speech model default values
 DEFAULT_VOICE_ID = "female-shaonv"
-DEFAULT_SPEECH_MODEL = "speech-02-hd"
-DEFAULT_MUSIC_MODEL = "music-1.5"
+DEFAULT_SPEECH_MODEL = "speech-2.6-hd"
+DEFAULT_MUSIC_MODEL = "music-2.0"
 DEFAULT_SPEED = 1.0
 DEFAULT_VOLUME = 1.0
 DEFAULT_PITCH = 0
@@ -13,7 +13,7 @@ DEFAULT_FORMAT = "mp3"
 DEFAULT_LANGUAGE_BOOST = "auto"
 
 # video model default values
-DEFAULT_T2V_MODEL = "T2V-01"
+DEFAULT_T2V_MODEL = "MiniMax-Hailuo-2.3"
 
 # image model default values
 DEFAULT_T2I_MODEL = "image-01"
